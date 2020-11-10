@@ -6,8 +6,36 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "chalk": "^4.1.0",
+    "commander": "^6.2.0",
+    "inquirer": "^7.3.3",
     "markdown-it": "^11.0.1",
     "marked": "^1.2.0",
     "yargs": "^16.1.0"
-  }
+  },
+  "description": "Get link information in a markdown file (.md)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "test"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "markdown",
+    "promises",
+    "mdLinks"
+  ],
+  "author": "Angelica Urrego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Angelik4/bog001-md-links/issues"
+  },
+  "homepage": "https://github.com/Angelik4/bog001-md-links#readme"
 }

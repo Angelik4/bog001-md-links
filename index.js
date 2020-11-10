@@ -4,7 +4,6 @@ module.exports = () => {
 const path = require('path');
 const fs = require('fs');
 const extension = path.extname('README.md');
-const absolute = path.resolve('prueba.md');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const marked = require('marked');
@@ -12,9 +11,9 @@ const axios = require('axios');
 const { resolve } = require('path');
 const { verify } = require('crypto');
 
-const readDocument = () => {
+const readDocument = (ruta) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(absolute, { encoding: 'utf8' }, (err, data) => {
+    fs.readFile(ruta, { encoding: 'utf8' }, (err, data) => {
       if (err) {
         reject('error: ', err)
       } else {
@@ -23,25 +22,10 @@ const readDocument = () => {
     });
   })
 }
-readDocument()
-  /*.then((result) => {
-    const resultArrayLinks = createArrayLinks(result);
-    //console.log(resultArrayLinks);
-    const resultValidateLinks = validateArrayLinks(resultArrayLinks);
-    resultValidateLinks.then((res)=>{
-      console.log(res);
-    })
-    //console.log("resultado validacion ", resultValidateLinks);
-    const resultArrayStats = statsLinks(resultArrayLinks);
-    console.log(resultArrayStats); 
-  }) 
-  .catch(
-    (err) => {
-      console.log(err);
-    });*/
 
 
-const createArrayLinks = (text) => {
+
+const createArrayLinks = (text, ruta) => {
   const tokens = marked.lexer(text);
   let html = marked.parser(tokens);
   const dom = new JSDOM(html);
@@ -52,7 +36,7 @@ const createArrayLinks = (text) => {
       let objLink = {
         href: link.href,
         text: link.textContent,
-        file: absolute,
+        file: ruta,
       }
       arrayLinks.push(objLink);
     }
@@ -93,27 +77,24 @@ validateArray = array.map((obj) => {
 
 
 
-const statsLinks = (arrayValidate) => {
+const statsLinks = (arrayValidate, showBroken) => {
 let uniqueValue = [...new Set(arrayValidate)];
 let totalLinks = arrayValidate.length;
 let brokenValue = arrayValidate.filter((brokeLinks) => {
   return brokeLinks.statusText == "fail";
 })
-    const elementStats = `
-      Total: ${totalLinks}
-      Unique: ${uniqueValue.length}`;
-      const showBroken = `${elementStats}\n broken: ${brokenValue}`;
+    const elementStats = {
+      Total: totalLinks,
+      Unique: uniqueValue.length}
     
       if(showBroken) {
-        console.log(showBroken)
-        return showBroken
+        
+        elementStats.broken = totalBroken
       } 
-      else{
         return elementStats
       }
-} 
-
 
 module.exports.readDocument = readDocument;
 module.exports.validateArrayLinks = validateArrayLinks;
 module.exports.createArrayLinks= createArrayLinks;
+module.exports.statsLinks = statsLinks;

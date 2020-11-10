@@ -1,19 +1,13 @@
-const path = require('path');
 const { validateArrayLinks } = require('./index.js');
-const absolute = path.resolve('prueba.md');
 const { createArrayLinks, readDocument } = require('./index.js');
 
 
-
-const objPrueba = {
-    validate: true,
-    stats: true
-}
 const mdLinks = (ruta, options) => {
+    console.log(ruta);
     return new Promise((resolve, reject) => {
         readDocument(ruta)
         .then((res) => {
-            return createArrayLinks(res);
+            return createArrayLinks(res, ruta);
         })
         .then((res) => {
             if (options.validate === true) {
@@ -21,12 +15,13 @@ const mdLinks = (ruta, options) => {
                 promiseValidate.then((result) => {
                     resolve(result);
                 })
-            } else {
+            }
+            else {
                 resolve(res);
             }
         })
         .catch(console.error);
     })
 }
-mdLinks(absolute, objPrueba);
 
+module.exports.mdLinks = mdLinks;
